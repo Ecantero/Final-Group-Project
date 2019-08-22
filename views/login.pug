@@ -1,0 +1,17 @@
+extends layout
+
+block content
+    h3
+    p#NameEntry Name Entry
+    form(id='form', method='post', action='/')
+      label UserName:
+      br
+      input(type='text', name='userame', required)
+      br
+      label Password:
+      br
+      input(type='password', name='pass', required)
+      br
+      input(id = 'butt' type='submit', value='Submit')
+  p#menu
+    a(href='/create') Create A New Account

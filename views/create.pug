@@ -1,0 +1,16 @@
+extends layout
+
+block content
+form(id='form2', method='post', action='/create')
+    label(for='name') Username: 
+    input(type='text', name='username', required)
+    br
+    label(for='age') Age: 
+    input(type='text', name='age', required)
+    br
+    label(for='age') Email: 
+    input(type='text', name='email', required)
+    br
+    label(for='age') Password: 
+    input(type='password', name='pass', required)
+    br
