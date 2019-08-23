@@ -18,7 +18,7 @@ class Repository {
      * @param {*} query
      *  The mongodb query object to user. Example: {"username": "Bob"}. An empty object gives all results.
      * @returns
-     *  An array of Users matching the given query, or an empty array if nothing matches
+     *  A Promise for an array of Users matching the given query, or an empty array if nothing matches
      */
     async getUsers(query){
         let data = [];
@@ -26,7 +26,7 @@ class Repository {
         try{
             client = await this.mongo.connect(this.mongoConnection, this.mongoOptions);
             let db = client.db(this.mongoDatabase);
-            data = await db.collection(this.mongoCollection).find(query).toArray();
+            data = db.collection(this.mongoCollection).find(query).toArray();
         } catch(e){
             console.log(e);
         } finally {
@@ -40,6 +40,9 @@ class Repository {
     /**
      * The user to verify. The password should be plaintext for hash comparison
      * @param {User} user 
+     *  The user object to verify. Should have a username, email, and non hashed password
+     * @returns
+     *  A Promise for a bool indicating succes. True for successful, false for failure
      */
     async verifyLogin(user){
         let result = await this.getUsers({"username": user.username, "email": user.email})
@@ -47,14 +50,16 @@ class Repository {
             return false;
         }
         else {
-            return await bcrypt.compare(user.password, result[0].password);
+            return bcrypt.compare(user.password, result[0].password);
         }
     }
 
     /**
      * Adds a single user to the database.
      * @param {User} user 
-     *  The User object. The supplied password will be hashed before being inserted to the database
+     *  A User object. The supplied password will be hashed before being inserted to the database
+     * @returns
+     *  A Promise for a InsertOneWriteOpResult object, or false if it the user is invalid
      */
     async addUser(user){
         let client = null;
@@ -64,7 +69,7 @@ class Repository {
             let db = client.db(this.mongoDatabase);
             if(user && user.password){
                 user.password = await bcrypt.hash(user.password, salt);
-                result = await db.collection(this.mongoCollection).insertOne(user);
+                result = db.collection(this.mongoCollection).insertOne(user);
             }
             else {
                 result = false;
@@ -79,8 +84,13 @@ class Repository {
         return result;
     }
 
+    /**
+     * Gets all users from the Mongo db instance
+     * @returns
+     *  A Promise for an array of all user objects from the db. The passwords are hashed.
+     */
     async getAllUsers(){
-        return await this.getUsers({});
+        return this.getUsers({});
     }
 }
 
