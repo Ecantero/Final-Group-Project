@@ -55,6 +55,29 @@ class Repository {
     }
 
     /**
+     * Gets the aggregated data for user's answers
+     * @returns
+     *  A Promise for a 2d array of numbers representing the amount of users who votes for that question, or false if it fails
+     */
+    async getQuestionData(){
+        return new Promise(async (resolve, reject) => {
+            try {
+                let answersAggregate = [[0,0,0,0],[0,0,0,0],[0,0,0,0]];
+                let usersArr = await this.getAllUsers();
+                for(var i = 0; i < usersArr.length; i++){
+                    let user = usersArr[i];
+                    answersAggregate[0][user.choices[0]]++;
+                    answersAggregate[1][user.choices[1]]++;
+                    answersAggregate[2][user.choices[2]]++;
+                }
+                resolve(answersAggregate);
+            } catch(e){
+                reject(false);
+            }
+        });
+    }
+
+    /**
      * Adds a single user to the database.
      * @param {User} user 
      *  A User object. The supplied password will be hashed before being inserted to the database
