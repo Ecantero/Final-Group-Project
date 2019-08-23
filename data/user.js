@@ -12,6 +12,7 @@ class User{
         this.age = 0;
         this.role = 'user';
         this.choices = [];
+        this.suspended = false;
     }
 }
 
