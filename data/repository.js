@@ -1,6 +1,6 @@
 const mongo = require('mongodb').MongoClient;
 const mongoConnection = 'mongodb://localhost:27017/';
-const bcrypt = require('bcryptjs');
+const bcrypt = require('bcrypt-nodejs');
 const User = require('./user');
 const salt = 10;
 

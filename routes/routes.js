@@ -1,3 +1,6 @@
+const user = require("../data/user.js");
+const repos = require("../data/repository.js");
+
 exports.index = (req, res) => {
   res.render("index", {
     title: "Hompage"
@@ -16,20 +19,30 @@ exports.create = (req, res) => {
   });
 };
 
+
+let bycrypt = require("bcrypt-nodejs");
+let hashPassword = (passwordStr) => {
+  return bycrypt.hashSync(passwordStr);
+  // bycrypt.hash(passwordStr, null, null, (err, hash) => {
+  //   passHash = hash;
+  //   console.log('password hashed');
+  //   return passHash;
+  // });
+};
+
 exports.createPerson = function (req, res) {
-  var person = new Person({
+  let hashed = hashPassword(req.body.password)
+  let User = new user({
     username: req.body.username,
     age: req.body.age,
     email: req.body.email,
-    password: req.body.pass,
-    Q1: req.body.Q1,
-    Q2: req.body.Q2,
-    Q3: req.body.Q3
+    password: hashed,
+    choices: {
+      Q1: req.body.Q1,
+      Q2: req.body.Q2,
+      Q3: req.body.Q3
+    },
   });
-  person.save(function (err, person) {
-    if (err) return console.error(err);
-    console.log(req.body.username + ' added');
-  });
-  res.redirect('/');
+  repos.addUser(User);
+  res.redirect("/login");
 };
-
