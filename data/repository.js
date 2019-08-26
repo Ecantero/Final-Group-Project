@@ -115,6 +115,25 @@ class Repository {
     async getAllUsers(){
         return this.getUsers({});
     }
+
+    /**
+     * Gets all users with role 'user' and scrubs away sensitive and nonadministrative data from the objects
+     * @returns
+     *  A Promise for all the users with role 'user' and sensitive and nonadministrative data removed
+     */
+    async getAllScrubbedUsers(){
+        
+        return new Promise(async (resolve, reject) => {
+            let users = await this.getUsers({role: 'user'});
+            for(var i = 0; i < users.length; i++){
+                delete users[i].password;
+                delete users[i].role;
+                delete users[i].choices;
+                delete users[i].age;
+            }
+            resolve(users);
+        });
+    }
 }
 
 module.exports = new Repository();
