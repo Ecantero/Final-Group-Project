@@ -71,7 +71,7 @@ class Repository {
      *  A Promise resolving to true on success, or false for failure
      */
     async verifyAdmin(user){
-        return new Promise((resolve, reject) => {
+        return new Promise(async (resolve, reject) => {
             if(await this.verifyLogin(user) && user['role'] === 'admin' ){
                 resolve(true);
             }
