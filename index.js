@@ -50,4 +50,6 @@ app.post("/create", urlencodedParser, route.createPerson);
 app.get("/login", route.login);
 app.post("/login", );
 
+app.get('/admin', adminRoute.admin);
+
 app.listen(3000);

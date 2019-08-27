@@ -38,7 +38,16 @@ class Repository {
     }
 
     /**
-     * The user to verify. The password should be plaintext for hash comparison
+     * Finds a user(s) by a given Username
+     * @param {String} username 
+     *  The Username to search by
+     */
+    async getUserByUsername(username){
+        return this.getUsers({"username": username});
+    }
+
+    /**
+     * Verifies a User. The password should be plaintext for hash comparison
      * @param {User} user 
      *  The user object to verify. Should have a username, email, and non hashed password
      * @returns
@@ -52,6 +61,25 @@ class Repository {
         else {
             return bcrypt.compare(user.password, result[0].password);
         }
+    }
+
+    /**
+     * Verifies that a User is a valid login and is an admin
+     * @param {User} user 
+     *  The User object to verify
+     * @returns
+     *  A Promise resolving to true on success, or false for failure
+     */
+    async verifyAdmin(user){
+        return new Promise((resolve, reject) => {
+            if(await this.verifyLogin(user) && user['role'] === 'admin' ){
+                resolve(true);
+            }
+            else {
+                reject(false);
+            }
+
+        });
     }
 
     /**
@@ -80,7 +108,7 @@ class Repository {
     /**
      * Adds a single user to the database.
      * @param {User} user 
-     *  A User object. The supplied password will be hashed before being inserted to the database
+     *  A User object to add to the database
      * @returns
      *  A Promise for a InsertOneWriteOpResult object, or false if it the user is invalid
      */
@@ -91,7 +119,7 @@ class Repository {
             client = await this.mongo.connect(this.mongoConnection, this.mongoOptions);
             let db = client.db(this.mongoDatabase);
             if(user && user.password){
-                user.password = await bcrypt.hash(user.password, salt);
+                //user.password = await bcrypt.hash(user.password, salt);
                 result = db.collection(this.mongoCollection).insertOne(user);
             }
             else {

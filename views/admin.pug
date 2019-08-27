@@ -1,0 +1,7 @@
+extends layout
+
+block content
+    div
+        each user in users
+            p=user.username
+            p=user.choices
