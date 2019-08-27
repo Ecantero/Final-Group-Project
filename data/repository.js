@@ -6,8 +6,9 @@ const salt = 10;
 
 class Repository {
     constructor(){
+        this.mongodb = require('mongodb');
         this.mongo = require('mongodb').MongoClient;
-        this.mongoConnection = 'mongodb+srv://dbappuser:VerySecure123@cluster0-ouwzy.mongodb.net/test?retryWrites=true&w=majority';
+        this.mongoConnection = 'mongodb+srv://dbappuser:3vPLgIyigQcsjpTs@cluster0-ouwzy.mongodb.net/test?retryWrites=true&w=majority';
         this.mongoDatabase = 'Expressive';
         this.mongoCollection = 'Users-testing'; //change to users for non testing purposes
         this.mongoOptions = { "useUnifiedTopology": "true", "useNewUrlParser": "true" };
@@ -41,9 +42,22 @@ class Repository {
      * Finds a user(s) by a given Username
      * @param {String} username 
      *  The Username to search by
+     * @returns
+     *  A Promise<User[]> for the results
      */
     async getUserByUsername(username){
         return this.getUsers({"username": username});
+    }
+
+    /**
+     * Finds a user by a given id
+     * @param {String} id 
+     *  The id to search for
+     * @returns
+     *  A Promise<User[]> for the results
+     */
+    async getUserById(id){
+        return this.getUsers({"_id": new this.mongodb.ObjectId(id)});
     }
 
     /**
@@ -125,6 +139,7 @@ class Repository {
             else {
                 result = false;
             }
+            console.log(user);
         } catch(e){
             console.log(e);
         } finally {
@@ -160,6 +175,63 @@ class Repository {
                 delete users[i].age;
             }
             resolve(users);
+        });
+    }
+
+    
+    /**
+     * Updates a user based on a given query
+     * @param {*} query 
+     *  The query object
+     * @param {User} user 
+     *  The new user to use for updating
+     * @returns
+     *  A Promise for an UpdateResult object, or false if it fails
+     */
+    async updateUser(query, user){
+        return new Promise(async (resolve, reject) => {
+            let client = null;
+            let result = false;
+            try{
+                client = await this.mongo.connect(this.mongoConnection, this.mongoOptions);
+                let db = client.db(this.mongoDatabase);
+                result = db.collection(this.mongoCollection).replaceOne(query, user);
+            } catch(e){
+                console.log(e);
+            } finally {
+                if(client) {
+                    client.close();
+                }
+                if(result){
+                    resolve(result);
+                }
+                else {
+                    reject(result);
+                }
+            }
+        });
+    }
+
+    /**
+     * Updates the suspension status of a user
+     * @param {String} id 
+     *  The id of the user
+     * @param {Boolean} suspended
+     *  The new suspension status to use
+     * @returns
+     *  A Promise of the Update result, or false if it fails 
+     */
+    async updateSuspension(id, suspended){
+        return new Promise(async (resolve, reject) => {
+            let user = await this.getUserById(id);
+            console.log(user);
+            if(!user){
+                reject(false);
+            }
+            else {
+                user[0].suspended = suspended;
+                resolve(this.updateUser({"_id": id }, user[0]));
+            }
         });
     }
 }
