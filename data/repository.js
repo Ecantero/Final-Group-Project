@@ -188,14 +188,14 @@ class Repository {
      * @returns
      *  A Promise for an UpdateResult object, or false if it fails
      */
-    async updateUser(query, user){
+    async updateUser(query, value){
         return new Promise(async (resolve, reject) => {
             let client = null;
             let result = false;
             try{
                 client = await this.mongo.connect(this.mongoConnection, this.mongoOptions);
                 let db = client.db(this.mongoDatabase);
-                result = db.collection(this.mongoCollection).replaceOne(query, user);
+                result = db.collection(this.mongoCollection).updateOne(query, value);
             } catch(e){
                 console.log(e);
             } finally {
@@ -230,7 +230,7 @@ class Repository {
             }
             else {
                 user[0].suspended = suspended;
-                resolve(this.updateUser({"_id": id }, user[0]));
+                resolve(this.updateUser({"_id": new this.mongodb.ObjectId(id) }, { "$set": {"suspended": suspended} }));
             }
         });
     }
