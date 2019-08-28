@@ -37,11 +37,11 @@ exports.createPerson = function (req, res) {
     age: req.body.age,
     email: req.body.email,
     password: hashed,
-    choices: {
-      Q1: req.body.Q1,
-      Q2: req.body.Q2,
-      Q3: req.body.Q3
-    },
+    choices: [
+      req.body.Q1,
+      req.body.Q2,
+      req.body.Q3
+    ],
   });
   repos.addUser(User);
   res.redirect("/login");
