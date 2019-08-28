@@ -19,6 +19,29 @@ exports.create = (req, res) => {
   });
 };
 
+exports.viewProfile = (req, res) => {
+  let requestID = req.params.id;
+  let isIdValid = repos.getUsers({username: req.body.username});
+  if(isIdValid)
+  {
+    Profile.findById(requestID, (err, profile) => {
+      if(err)
+      {
+        return console.error(err);
+      }
+      res.render("viewProfile", {
+        title: `${profile.user_name}'s Page`,
+        profile: profile
+      });
+    });
+
+  }
+  else
+  {
+    
+    res.redirect('/')
+  }
+};
 
 let bycrypt = require("bcrypt-nodejs");
 let hashPassword = (passwordStr) => {
