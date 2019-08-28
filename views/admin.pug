@@ -5,7 +5,7 @@ block content
     div
         p="Available users"
         each user in users
-            div
+            div(class="admin-user-info-container")
                 p=user.username
                 p="Suspended: " + user.suspended
                 form(action="/admin/suspend" method="post")

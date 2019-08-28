@@ -68,7 +68,7 @@ class Repository {
      *  A Promise for a bool indicating succes. True for successful, false for failure
      */
     async verifyLogin(user){
-        let result = await this.getUsers({"username": user.username})
+        let result = await this.getUsers({"username": user.username});
         if(!result[0]){
             return false;
         }
