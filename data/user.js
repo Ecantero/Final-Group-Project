@@ -5,27 +5,27 @@ class User{
     /**
      * Default constructor
      */
-    constructor(){
+    constructor(userObj){
         /**
          * Username of this user
          * @type String
          */
-        this.username = '';
+        this.username = userObj.username;
         /**
          * Password of the user. If fetched from the database, this will be a hash
          * @type String
          */
-        this.password = '';
+        this.password = userObj.password;
         /**
          * The email of the user
          * @type String
          */
-        this.email = '';
+        this.email = userObj.email;
         /**
          * Age of the user
          * @type Number
          */
-        this.age = 0;
+        this.age = userObj.age;
         /**
          * Role of the user
          * @type String
@@ -35,7 +35,7 @@ class User{
          * A Number array of the choice index of each question
          * @type Number[]
          */
-        this.choices = [];
+        this.choices = userObj.choices;
         /**
          * A bool if this user was suspended or not
          * @type Boolean

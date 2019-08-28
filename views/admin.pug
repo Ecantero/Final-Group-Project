@@ -1,7 +1,16 @@
 extends layout
 
-block content
+block content    
+    h2=title
     div
+        p="Available users"
         each user in users
-            p=user.username
-            p=user.choices
+            div
+                p=user.username
+                p="Suspended: " + user.suspended
+                form(action="/admin/suspend" method="post")
+                    label="Set Suspension: "
+                    input(type="checkbox" name="suspend")
+                    input(type="submit" name="Update suspension status")
+                    input(type="hidden" value=user._id name="id")
+            

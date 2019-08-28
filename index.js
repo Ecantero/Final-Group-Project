@@ -45,6 +45,7 @@ app.get("/login", route.login);
 app.post("/login", route.login);
 
 app.get('/admin', adminRoute.admin);
+app.post('/admin/suspend', urlencodedParser, adminRoute.suspend);
 
 app.get('/viewProfile/:id', checkAuthentication);
 
