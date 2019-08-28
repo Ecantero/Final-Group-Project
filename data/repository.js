@@ -63,12 +63,12 @@ class Repository {
     /**
      * Verifies a User. The password should be plaintext for hash comparison
      * @param {User} user 
-     *  The user object to verify. Should have a username, email, and non hashed password
+     *  The user object to verify. Should have a username and a non hashed password
      * @returns
      *  A Promise for a bool indicating succes. True for successful, false for failure
      */
     async verifyLogin(user){
-        let result = await this.getUsers({"username": user.username, "email": user.email})
+        let result = await this.getUsers({"username": user.username})
         if(!result[0]){
             return false;
         }
