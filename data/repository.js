@@ -139,7 +139,6 @@ class Repository {
             else {
                 result = false;
             }
-            console.log(user);
         } catch(e){
             console.log(e);
         } finally {
@@ -224,7 +223,6 @@ class Repository {
     async updateSuspension(id, suspended){
         return new Promise(async (resolve, reject) => {
             let user = await this.getUserById(id);
-            console.log(user);
             if(!user){
                 reject(false);
             }
