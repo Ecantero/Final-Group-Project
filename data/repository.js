@@ -182,8 +182,8 @@ class Repository {
      * Updates a user based on a given query
      * @param {*} query 
      *  The query object
-     * @param {User} user 
-     *  The new user to use for updating
+     * @param {*} value 
+     *  The update query to use for updating
      * @returns
      *  A Promise for an UpdateResult object, or false if it fails
      */
