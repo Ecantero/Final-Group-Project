@@ -37,6 +37,7 @@ exports.createPerson = function (req, res) {
     age: req.body.age,
     email: req.body.email,
     password: hashed,
+    role: req.body.admin,
     choices: {
       Q1: req.body.Q1,
       Q2: req.body.Q2,
