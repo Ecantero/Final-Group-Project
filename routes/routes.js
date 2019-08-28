@@ -38,9 +38,9 @@ exports.createPerson = function (req, res) {
     email: req.body.email,
     password: hashed,
     choices: [
-      req.body.Q1,
-      req.body.Q2,
-      req.body.Q3
+      parseInt(req.body.Q1, 10),
+      parseInt(req.body.Q2, 10),
+      parseInt(req.body.Q3, 10)
     ],
   });
   repos.addUser(User);
