@@ -40,7 +40,9 @@ app.get("/", route.index);
 app.get("/create", route.create);
 app.post("/create", urlencodedParser, route.createPerson);
 
-app.post("/login", route.login);
+
+app.get("/login", route.login);
+app.post("/login", urlencodedParser, route.sessionlogin);
 
 app.get('/admin', adminRoute.admin);
 app.post('/admin/suspend', urlencodedParser, adminRoute.suspend);

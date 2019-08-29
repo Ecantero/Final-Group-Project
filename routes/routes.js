@@ -1,16 +1,44 @@
 const user = require("../data/user.js");
 const repos = require("../data/repository.js");
 
-exports.index = (req, res) => {
-  res.render("index", {
-    title: "Hompage"
-  });
+exports.index = async (req, res) => {
+  if(await repos.verifyLogin(req.session.user)){
+    res.render("index", {
+      title: "Homepage"
+    });
+  }
+  else {
+    res.redirect('/login');
+  }
 };
 
 exports.login = (req, res) => {
   res.render("login", {
     title: "Login"
   });
+};
+
+exports.sessionlogin = async (req, res) =>{
+  let user = await repos.getUserByUsername(req.body.username);
+  user = user[0];
+  if(user){
+    let hashed = user.password;
+    user.password = req.body.pass;
+    let matched = await repos.verifyLogin(user)
+    if(matched){
+      req.session.user = user;
+      res.redirect('/');
+    }
+    else {
+      res.redirect('/login');
+    }
+
+  }
+  else {
+    res.redirect('/login');
+  }
+
+  
 };
 
 exports.create = (req, res) => {
@@ -43,7 +71,7 @@ exports.viewProfile = (req, res) => {
   }
 };
 
-let bycrypt = require("bcrypt-nodejs");
+let bycrypt = require("bcryptjs");
 let hashPassword = (passwordStr) => {
   return bycrypt.hashSync(passwordStr);
   // bycrypt.hash(passwordStr, null, null, (err, hash) => {
@@ -54,7 +82,7 @@ let hashPassword = (passwordStr) => {
 };
 
 exports.createPerson = function (req, res) {
-  let hashed = hashPassword(req.body.password)
+  let hashed = hashPassword(req.body.pass)
   let User = new user({
     username: req.body.username,
     age: req.body.age,

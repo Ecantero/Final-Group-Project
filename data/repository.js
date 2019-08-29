@@ -1,6 +1,6 @@
 const mongo = require('mongodb').MongoClient;
 const mongoConnection = 'mongodb://localhost:27017/';
-const bcrypt = require('bcrypt-nodejs');
+const bcrypt = require('bcryptjs');
 const User = require('./user');
 const salt = 10;
 
@@ -68,8 +68,11 @@ class Repository {
      *  A Promise for a bool indicating succes. True for successful, false for failure
      */
     async verifyLogin(user){
+        if(!user || !user.username){
+            return false;
+        }
         let result = await this.getUsers({"username": user.username});
-        if(!result[0]){
+        if(!result[0] || result[0].suspended){
             return false;
         }
         else {
@@ -92,7 +95,6 @@ class Repository {
             else {
                 reject(false);
             }
-
         });
     }
 
