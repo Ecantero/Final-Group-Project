@@ -70,3 +70,15 @@ exports.createPerson = function (req, res) {
   repos.addUser(User);
   res.redirect("/login");
 };
+
+exports.logoutOfAccount = (req, res) => {
+  req.session.destroy((err) => {
+    if(err){
+        console.log(err);
+    }
+    else
+    {
+        res.redirect('/');
+    }
+});
+};
