@@ -3,10 +3,10 @@ let repo = require('../data/repository');
 exports.admin = async (req, res) => {
     if(await repo.verifyAdmin(req.session.user)){
         let users = await repo.getAllScrubbedUsers();
-        res.render('admin', { "users": users, "title": "Admin Page" })
+        res.render('admin', { "users": users, "title": "Admin Page" });
     }
     else {
-        res.redirect('/login')
+        res.redirect('/login');
     }
 }
 exports.suspend = async (req, res) => {
@@ -16,6 +16,6 @@ exports.suspend = async (req, res) => {
         res.redirect('/admin');
     }
     else {
-        res.redirect('/login')
+        res.redirect('/login');
     }
 }
