@@ -1,0 +1,17 @@
+extends layout
+
+block content
+  form(id='form', method='post', action='/edit/' + person.id)
+    label(for='name') Username: 
+    input(type='text', name='username' value=person.username)
+    br
+    label(for='age') Age: 
+    input(type='text', name='age' value=person.age)
+    br
+    label(for='email') Email: 
+    input(type='text', name='email' value=person.email)
+    br
+    label(for='password') Password: 
+    input(type='text', name='password' value=person.password)
+    br
+    input(type='submit', value='Update Person')
