@@ -24,6 +24,7 @@
     "express-session": "^1.16.2",
     "mongodb": "^3.3.0",
     "path": "^0.12.7",
-    "pug": "^2.0.4"
+    "pug": "^2.0.4",
+    "requirejs": "^2.3.6"
   }
 }
