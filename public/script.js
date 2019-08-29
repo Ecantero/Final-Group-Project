@@ -1,6 +1,4 @@
 define(function(require, exports, module) {
-  var Chart = require("chart.js");
-  var repo = require("../data/repository");
   const Music = document.getElementById("Music");
   const Game = document.getElementById("Game");
   const Movie = document.getElementById("Movie");
@@ -20,7 +18,7 @@ define(function(require, exports, module) {
   };
 
   const getMusicCharts = async () => {
-    const data = await repo.getQuestionData();
+    const data = getData();
     var musicChart = new Chart(Music, {
       type: "bar",
       data: {
