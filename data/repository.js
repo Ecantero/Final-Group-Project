@@ -89,11 +89,11 @@ class Repository {
      */
     async verifyAdmin(user){
         return new Promise(async (resolve, reject) => {
-            if(await this.verifyLogin(user) && user['role'] === 'admin' ){
+            if(user && await this.verifyLogin(user) && user['role'] === 'admin' ){
                 resolve(true);
             }
             else {
-                reject(false);
+                resolve(false);
             }
         });
     }
@@ -203,12 +203,7 @@ class Repository {
                 if(client) {
                     client.close();
                 }
-                if(result){
-                    resolve(result);
-                }
-                else {
-                    reject(result);
-                }
+                resolve(result);
             }
         });
     }
@@ -226,7 +221,7 @@ class Repository {
         return new Promise(async (resolve, reject) => {
             let user = await this.getUserById(id);
             if(!user){
-                reject(false);
+                resolve(false);
             }
             else {
                 user[0].suspended = suspended;
