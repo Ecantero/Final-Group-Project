@@ -51,4 +51,6 @@ app.get('/logout', route.logoutOfAccount);
 
 app.get('/viewProfile/:id', checkAuthentication);
 
+app.get('/data', route.getData);
+
 app.listen(3000);

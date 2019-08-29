@@ -12,3 +12,11 @@ body{
     margin: 20px;
     padding: 50px;
 }
+
+nav > a {
+    text-decoration: none;
+    margin: 10px;
+    padding: 5px;
+    border: 1px solid black;
+    border-radius: 100px;
+}

@@ -101,12 +101,15 @@ exports.createPerson = function (req, res) {
 
 exports.logoutOfAccount = (req, res) => {
   req.session.destroy((err) => {
-    if(err){
-        console.log(err);
+    if (err) {
+      console.log(err);
     }
-    else
-    {
-        res.redirect('/');
+    else {
+      res.redirect('/');
     }
-});
+  });
+};
+exports.getData = async (req, res) => {
+  let data = await repos.getQuestionData();
+  res.json({"data": data});
 };
